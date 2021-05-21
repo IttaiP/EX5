@@ -58,14 +58,14 @@ class MainActivity : AppCompatActivity() {
             if(todo.completed.isChecked){
                 holder!!.markItemDone(holder!!.currentItems[position])
                 adapter!!.setTodos(holder!!.currentItems)
-                todo.text.paintFlags = todo.text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//                todo.text.paintFlags = todo.text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
 
             }
             else{
                 holder!!.markItemInProgress(holder!!.currentItems[position])
                 adapter!!.setTodos(holder!!.currentItems)
-                todo.text.setPaintFlags(todo.text.getPaintFlags() and Paint.STRIKE_THRU_TEXT_FLAG.inv())
+//                todo.text.setPaintFlags(todo.text.getPaintFlags() and Paint.STRIKE_THRU_TEXT_FLAG.inv())
 
 
             }

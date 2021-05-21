@@ -1,5 +1,6 @@
 package exercise.android.reemh.todo_items
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,15 @@ class TodoAdapter: RecyclerView.Adapter<TodoHolder>() {
     override fun onBindViewHolder(holder: TodoHolder, position: Int) {
         val todo = _todos[position]
         holder.text.setText(todo.todoText)
+        if(todo.done){
+            holder.text.paintFlags = holder.text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            holder.completed.setChecked(true)
+        }
+        else{
+            holder.text.setPaintFlags(holder.text.getPaintFlags() and Paint.STRIKE_THRU_TEXT_FLAG.inv())
+            holder.completed.setChecked(false)
 
+        }
         holder.completed.setOnClickListener{
             val callback = onItemClickCallback ?: return@setOnClickListener
             callback(holder, position)
