@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class TodoItem implements Serializable {
   // TODO: edit this class as you want
+    String id;
     String todoText;
     boolean done = false;
 

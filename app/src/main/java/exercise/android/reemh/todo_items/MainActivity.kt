@@ -1,17 +1,15 @@
 package exercise.android.reemh.todo_items
 
-import android.graphics.Paint
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,12 +17,19 @@ class MainActivity : AppCompatActivity() {
     var holder: TodoItemsHolder? = null
     var newTaskText = ""
     var adapter: TodoAdapter?= null;
+    private var instance: TodosApp? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        val context: Context = instance!!.applicationContext
         setContentView(R.layout.activity_main)
+        Log.e("aaaaaaaaaaaaaaaa", instance.toString())
+        instance = applicationContext as TodosApp
+
         if (holder == null) {
-            holder = TodoItemsHolderImpl()
+            holder = instance!!.todosData;
         }
+
+
 
         // TODO: implement the specs as defined below
         //    (find all UI components, hook them up, connect everything you need)
@@ -58,14 +63,12 @@ class MainActivity : AppCompatActivity() {
             if(todo.completed.isChecked){
                 holder!!.markItemDone(holder!!.currentItems[position])
                 adapter!!.setTodos(holder!!.currentItems)
-//                todo.text.paintFlags = todo.text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
 
             }
             else{
                 holder!!.markItemInProgress(holder!!.currentItems[position])
                 adapter!!.setTodos(holder!!.currentItems)
-//                todo.text.setPaintFlags(todo.text.getPaintFlags() and Paint.STRIKE_THRU_TEXT_FLAG.inv())
 
 
             }
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable("todos", holder as?TodoItemsHolderImpl)
+        outState.putSerializable("todos", holder as? TodoItemsHolderImpl)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
