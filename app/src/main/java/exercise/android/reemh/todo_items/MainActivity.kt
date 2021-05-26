@@ -120,6 +120,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val result = data!!.getStringExtra("result")
+        val position = data.getStringExtra("position")?.toInt()
+        Log.e("res", result.toString())
+        Log.e("pos", position.toString())
+        Log.e("done", holder!!.currentItems[position!!].done.toString())
+        holder!!.currentItems[position!!].done
+        holder!!.currentItems[position!!].SetText(result)
         adapter!!.setTodos(holder!!.currentItems)
     } //onActivityResult
 
