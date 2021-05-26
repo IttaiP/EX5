@@ -1,9 +1,15 @@
 package exercise.android.reemh.todo_items;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
-public class TodosApp extends Application {
+import androidx.annotation.RequiresApi;
+
+import java.io.Serializable;
+import java.text.ParseException;
+
+public class TodosApp extends Application implements Serializable {
 
     TodoItemsHolderImpl todos;
 
@@ -13,12 +19,17 @@ public class TodosApp extends Application {
         return todos;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         Log.e("aaaaaaaaaaaaaaaa", "here");
-        todos = new TodoItemsHolderImpl(this);
+        try {
+            todos = new TodoItemsHolderImpl(this);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public static TodosApp getInstance(){

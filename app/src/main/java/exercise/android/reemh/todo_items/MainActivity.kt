@@ -1,11 +1,14 @@
 package exercise.android.reemh.todo_items
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,15 +17,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
     @JvmField
-    var holder: TodoItemsHolder? = null
+    var holder: TodoItemsHolderImpl? = null
     var newTaskText = ""
     var adapter: TodoAdapter?= null;
     private var instance: TodosApp? = null
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        val context: Context = instance!!.applicationContext
         setContentView(R.layout.activity_main)
-        Log.e("aaaaaaaaaaaaaaaa", instance.toString())
         instance = applicationContext as TodosApp
 
         if (holder == null) {
@@ -77,6 +80,31 @@ class MainActivity : AppCompatActivity() {
             holder!!.deleteItem(holder!!.currentItems[position])
             adapter!!.setTodos(holder!!.currentItems)
         }
+        adapter!!.onEditClickCallback = { todo, position ->
+            val intentForEditScreen =  Intent(this, EditTodoActivity::class.java).apply {
+                putExtra("description", holder!!.currentItems[position])
+                putExtra("position", position)
+                Log.e("aaaaaaaaaaaaaaaa", holder!!.currentItems[position].todoText)
+
+
+
+
+            }
+            startActivityForResult(intentForEditScreen, 1)
+            adapter!!.setTodos(holder!!.currentItems)
+            Log.e("after activity", holder!!.currentItems[position].done.toString())
+//            if(holder!!.currentItems[position].done){
+//                holder!!.markItemDone(holder!!.currentItems[position])
+//
+//            }
+//            else{
+//                holder!!.markItemInProgress(holder!!.currentItems[position])
+//            }
+//            adapter!!.setTodos(holder!!.currentItems)
+
+        }
+
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -86,8 +114,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        holder = savedInstanceState.getSerializable("todos") as?TodoItemsHolder
+        holder = savedInstanceState.getSerializable("todos") as?TodoItemsHolderImpl
         adapter!!.setTodos(holder!!.currentItems)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        adapter!!.setTodos(holder!!.currentItems)
+    } //onActivityResult
+
 
 }

@@ -12,6 +12,7 @@ class TodoAdapter: RecyclerView.Adapter<TodoHolder>() {
 
     public var onItemClickCallback: ((TodoHolder, Int)->Unit)?=null
     public var onDeleteClickCallback: ((Int)->Unit)?=null
+    public var onEditClickCallback: ((TodoHolder,Int)->Unit)?=null
 
     fun setTodos(todos: List<TodoItem>){
         _todos.clear()
@@ -50,6 +51,11 @@ class TodoAdapter: RecyclerView.Adapter<TodoHolder>() {
         holder.deleteButton.setOnClickListener{
             val callback = onDeleteClickCallback ?: return@setOnClickListener
             callback(position)
+        }
+
+        holder.text.setOnClickListener{
+            val callback = onEditClickCallback ?: return@setOnClickListener
+            callback(holder, position)
         }
 
     }
